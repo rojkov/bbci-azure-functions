@@ -70,6 +70,7 @@ module.exports = function (context, data) {
     run(function*() {
 	context.log(context.req);
 	context.log(data);
+	context.bindings.outputQueueItem = [];
 	if (context.req.headers["x-github-event"] === "push") {
 	    let message = {
 		uuid: uuidv4(),
