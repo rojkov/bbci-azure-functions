@@ -1,5 +1,5 @@
 const uuidv4 = require("uuid/v4");
-//const moniker = require("moniker");
+const moniker = require("moniker");
 const azureStorage = require("azure-storage");
 const GitHubApi = require("github");
 
@@ -69,23 +69,23 @@ module.exports = function (context, data) {
     context.log('GitHub Webhook triggered!!');
     run(function*() {
 	context.log(context.req);
-	context.log(data);
 	context.bindings.outputQueueItem = [];
 	if (context.req.headers["x-github-event"] === "push") {
 	    let message = {
 		uuid: uuidv4(),
-		humanid: "vmtutorial2",
+		humanid: moniker.choose(),
 		githubdata: data
 	    };
 	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
-	    context.log(githubtoken);
-	    context.bindings.outputQueueItem = [message];
-	    updateGithubStatus(githubtoken.trim(), {
+	    context.log(githubtoken, message);
+	    //context.bindings.outputQueueItem = [message];
+	    yield updateGithubStatus(githubtoken.trim(), {
 		owner: data.repository.owner.name,
 		repo: data.repository.name,
 		sha: data.after,
 		state: "pending"
 	    });
+	    context.log("github status updated!!!");
 	}
 	context.res = { body: 'Ok' };
 	context.done();
