@@ -1,5 +1,5 @@
 const uuidv4 = require("uuid/v4");
-const moniker = require("moniker");
+//const moniker = require("moniker");
 const azureStorage = require("azure-storage");
 const GitHubApi = require("github");
 
@@ -74,7 +74,7 @@ module.exports = function (context, data) {
 	if (context.req.headers["x-github-event"] === "push") {
 	    let message = {
 		uuid: uuidv4(),
-		humanid: moniker.choose(),
+		humanid: "vmtutorial2",
 		githubdata: data
 	    };
 	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
