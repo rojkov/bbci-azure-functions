@@ -1,4 +1,5 @@
 let fs = require("fs");
+let path = require("path");
 
 let azureStorage = require('azure-storage');
 let msRestAzure = require('ms-rest-azure');
@@ -93,7 +94,7 @@ module.exports = function (context, queueItem) {
         let text = yield getBlobToText("credentials", "credentials.json");
 	let { clientId, clientSecret, tenantId, subscriptionId } = JSON.parse(text);
 	console.log(clientSecret);
-	let cloud_init_tpl = fs.readFileSync("cloud-init.txt", "utf8");
+	let cloud_init_tpl = fs.readFileSync(path.join(__dirname, "cloud-init.txt"), "utf8");
 	let taskdata = queueItem;
 	let taskdata_encoded = new Buffer(JSON.stringify(taskdata)).toString("base64");
 	const [accountName, accountKey] = parseAccount(process.env["bbci_STORAGE"]);
