@@ -1,7 +1,7 @@
 var module = require("./index.js");
 var context = {
     log: console.log,
-    done: function() {},
+    done: function() { console.log(this.bindings) },
     req: {
         headers: { "x-github-event": "push" }
     },
@@ -19,4 +19,3 @@ var data = {
 
 module(context, data);
 
-console.log(context.bindings);

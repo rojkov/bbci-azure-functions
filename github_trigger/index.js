@@ -68,7 +68,6 @@ function updateGithubStatus(statustoken, statusdata) {
 module.exports = function (context, data) {
     context.log('GitHub Webhook triggered!!');
     run(function*() {
-	context.log(context.req);
 	context.bindings.outputQueueItem = [];
 	if (context.req.headers["x-github-event"] === "push") {
 	    let message = {
@@ -78,7 +77,7 @@ module.exports = function (context, data) {
 	    };
 	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
 	    context.log(githubtoken, message);
-	    //context.bindings.outputQueueItem = [message];
+	    context.bindings.outputQueueItem = [message];
 	    yield updateGithubStatus(githubtoken.trim(), {
 		owner: data.repository.owner.name,
 		repo: data.repository.name,
