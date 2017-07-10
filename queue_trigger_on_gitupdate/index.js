@@ -98,10 +98,10 @@ module.exports = function (context, queueItem) {
 	let taskdata = queueItem;
 	let taskdata_encoded = new Buffer(JSON.stringify(taskdata)).toString("base64");
 	const [accountName, accountKey] = parseAccount(process.env["bbci_STORAGE"]);
-	const groupName = queueItem.humanid;
+	const groupName = queueItem.human_id;
 	let cloud_init = new Buffer(cloud_init_tpl.replace("TASKDATA_PLACEHOLDER",
 							   taskdata_encoded).replace("HOSTNAME_PLACEHOLDER",
-										     queueItem.humanid).replace("STORAGE_USERNAME", accountName).replace("STORAGE_NAME", accountName).replace("STORAGE_PASSWORD", accountKey)).toString("base64");
+										     queueItem.human_id).replace("STORAGE_USERNAME", accountName).replace("STORAGE_NAME", accountName).replace("STORAGE_PASSWORD", accountKey)).toString("base64");
 	let credentials = new msRestAzure.ApplicationTokenCredentials(clientId, tenantId, clientSecret);
 	let resourceClient = new resourceManagement.ResourceManagementClient(credentials, subscriptionId);
 	let networkClient = new networkManagement(credentials, subscriptionId);
