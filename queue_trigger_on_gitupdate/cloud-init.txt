@@ -43,6 +43,7 @@ mounts:
 runcmd:
  - [ mount, /fileshare, -o, "uid=cibot,forceuid,gid=cibot,forcegid" ]
  - [ pip3, install, azure-storage ]
+ - [ pip3, install, PyGithub ]
 write_files:
  - encoding: b64
    content: TASKDATA_PLACEHOLDER

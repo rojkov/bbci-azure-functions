@@ -70,12 +70,14 @@ module.exports = function (context, data) {
     run(function*() {
 	context.bindings.outputQueueItem = [];
 	if (context.req.headers["x-github-event"] === "push") {
+	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
 	    let message = {
 		uuid: uuidv4(),
-		humanid: moniker.choose(),
-		githubdata: data
+		human_id: moniker.choose(),
+		connection_string: process.env["bbci_STORAGE"],
+		github_data: data,
+		github_token: githubtoken
 	    };
-	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
 	    context.log(githubtoken, message);
 	    context.bindings.outputQueueItem = [message];
 	    yield updateGithubStatus(githubtoken.trim(), {
