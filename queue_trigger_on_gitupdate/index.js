@@ -142,7 +142,7 @@ module.exports = function (context, queueItem) {
 	const vmParameters = {
 	    location: "northeurope",
 	    hardwareProfile: {
-		vmSize: "Basic_A0"
+		vmSize: "Standard_A2m_v2" // "Basic_A0"
 	    },
 	    storageProfile: {
 		imageReference: {
