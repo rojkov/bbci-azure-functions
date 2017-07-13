@@ -93,7 +93,6 @@ module.exports = function (context, queueItem) {
     run(function*() {
         let text = yield getBlobToText("credentials", "credentials.json");
 	let { clientId, clientSecret, tenantId, subscriptionId } = JSON.parse(text);
-	console.log(clientSecret);
 	let cloud_init_tpl = fs.readFileSync(path.join(__dirname, "cloud-init.txt"), "utf8");
 	let taskdata = queueItem;
 	let taskdata_encoded = new Buffer(JSON.stringify(taskdata)).toString("base64");
@@ -108,19 +107,14 @@ module.exports = function (context, queueItem) {
 	let computeClient = new computeManagement(credentials, subscriptionId);
 
 	let group = yield resourceClient.resourceGroups.createOrUpdate(groupName, groupParameters);
-	console.log(group);
 
 	let vnet = yield networkClient.virtualNetworks.createOrUpdate(group.name, group.name + "_vnet", vnetParameters);
-	console.log(vnet);
 
 	let publicIP = yield networkClient.publicIPAddresses.createOrUpdate(group.name, group.name + "_ip", publicIPParameters);
-	console.log(publicIP);
 
 	let subnetInfo = yield networkClient.subnets.get(group.name, group.name + "_vnet", "subnet1");
-	console.log(subnetInfo);
 
 	let nsg = yield networkClient.networkSecurityGroups.get("bbci", "bbci_nsg");
-	console.log(nsg);
 
 	const nicParameters = {
 	    location: "northeurope",
@@ -136,7 +130,7 @@ module.exports = function (context, queueItem) {
 	    ]
 	};
 	let nic = yield networkClient.networkInterfaces.createOrUpdate(group.name, group.name + "_nic", nicParameters);
-	console.log(nic);
+	context.log(nic);
 
 	const vmName = group.name + "vm";
 	const vmParameters = {
@@ -178,7 +172,7 @@ module.exports = function (context, queueItem) {
 	    }
 	};
 	let vm = yield computeClient.virtualMachines.beginCreateOrUpdate(group.name, vmName, vmParameters);
-	console.log(vm);
+	context.log(vm);
 
 	context.done();
     });
