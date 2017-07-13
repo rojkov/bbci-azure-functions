@@ -5,6 +5,6 @@ var context = {
 };
 
 var taskdata = {
-    humanid: "vm-tutorial2"
+    human_id: "vm-tutorial2"
 };
 module(context, taskdata);
