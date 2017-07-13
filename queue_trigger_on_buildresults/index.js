@@ -1,4 +1,5 @@
 let msRestAzure = require('ms-rest-azure');
+let azureStorage = require('azure-storage');
 let resourceManagement = require("azure-arm-resource");
 
 function run(taskDef) {
