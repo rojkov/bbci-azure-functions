@@ -44,7 +44,7 @@ runcmd:
  - [ mount, /fileshare, -o, "uid=cibot,forceuid,gid=cibot,forcegid" ]
  - [ pip3, install, azure-storage ]
  - [ pip3, install, PyGithub ]
- - [ /fileshare/bin/buildit.py ]
+ - [ su, "-c", /fileshare/bin/buildit.py, "-", cibot ]
 write_files:
  - encoding: b64
    content: TASKDATA_PLACEHOLDER
