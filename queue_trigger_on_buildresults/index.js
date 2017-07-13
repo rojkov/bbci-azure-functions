@@ -41,25 +41,6 @@ function getBlobToText(container, blobName) {
     });
 }
 
-function parseAccount(connectionString) {
-    let name = null;
-    let key = null;
-
-    for (const element of connectionString.split(";")) {
-        if (element.startsWith("AccountKey=")) {
-            key = element.substring(11);
-        } else if (element.startsWith("AccountName=")) {
-            name= element.substring(12);
-        }
-    }
-
-    if (name === null || key === null) {
-        throw "Can't parse account: " + connectionString;
-    }
-
-    return [name, key];
-}
-
 module.exports = function (context, queueItem) {
     context.log('Queue trigger for build results processes work item', queueItem);
     run(function*() {
