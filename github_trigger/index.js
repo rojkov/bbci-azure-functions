@@ -87,7 +87,7 @@ module.exports = function (context, data) {
 	    };
 	    context.log(message);
 	    context.bindings.outputQueueItem = [message];
-	    yield updateGithubStatus(cfg.token.trim(), {
+	    yield updateGithubStatus(cfg.project.token.trim(), {
 		owner: data.repository.owner.name,
 		repo: data.repository.name,
 		sha: data.after,

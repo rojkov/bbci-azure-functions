@@ -12,7 +12,7 @@ var context = {
 var data = {
     after: "9ba7e37f114864565279cbb395398f44557da103",
     repository: {
-        name: "testrepo",
+        name: "meta-ros",
         owner: { name: "rojkov" }
     }
 };
