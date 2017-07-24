@@ -30,14 +30,14 @@ function run(taskDef) {
     }());
 }
 
-function getBlobToText(container, blobName) {
+function getBlobToObj(container, blobName) {
     return new Promise(function(resolve, reject) {
 	let blobService = azureStorage.createBlobService(process.env["bbci_STORAGE"]);
 	blobService.getBlobToText(container, blobName, function(err, text, result, response) {
 	    if (err) {
 		reject(err);
 	    } else {
-		resolve(text)
+		resolve(JSON.parse(text))
 	    }
 	});
     });
@@ -70,7 +70,8 @@ module.exports = function (context, data) {
     run(function*() {
 	context.bindings.outputQueueItem = [];
 	if (context.req.headers["x-github-event"] === "push") {
-	    let githubtoken = yield getBlobToText("credentials", "github-status-token");
+	    const configkey = data.repository.owner.name + "-" + data.repository.name;
+	    let cfg = yield getBlobToObj("projects", configkey);
 	    const gdata = {
 		after: data.after,
 		repository: {
@@ -81,12 +82,12 @@ module.exports = function (context, data) {
 		uuid: uuidv4(),
 		human_id: moniker.choose(),
 		connection_string: process.env["bbci_STORAGE"],
+		config: cfg,
 		github_data: gdata,
-		github_token: githubtoken
 	    };
-	    context.log(githubtoken, message);
+	    context.log(message);
 	    context.bindings.outputQueueItem = [message];
-	    yield updateGithubStatus(githubtoken.trim(), {
+	    yield updateGithubStatus(cfg.token.trim(), {
 		owner: data.repository.owner.name,
 		repo: data.repository.name,
 		sha: data.after,
