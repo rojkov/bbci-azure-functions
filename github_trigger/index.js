@@ -81,7 +81,8 @@ module.exports = function (context, data) {
 	    return;
 	}
 
-	const configkey = data.repository.owner.name + "-" + data.repository.name;
+	const configkey = data.repository.owner.login + "-" + data.repository.name;
+	context.log("Getting config from " + configkey)
 	let cfg = yield getBlobToObj("projects", configkey);
 
 	if (event_type === "push") {
@@ -93,7 +94,7 @@ module.exports = function (context, data) {
 		}
 	    };
 	    github_opts = {
-		owner: data.repository.owner.name,
+		owner: data.repository.owner.login,
 		repo: data.repository.name,
 		sha: data.after,
 		state: "pending"
@@ -108,7 +109,7 @@ module.exports = function (context, data) {
 		}
 	    };
 	    github_opts = {
-		owner: data.repository.owner.name,
+		owner: data.repository.owner.login,
 		repo: data.repository.name,
 		sha: data.pull_request.head.sha,
 		state: "pending"
