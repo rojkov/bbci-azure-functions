@@ -68,33 +68,69 @@ function updateGithubStatus(statustoken, statusdata) {
 module.exports = function (context, data) {
     context.log('GitHub Webhook triggered!!');
     run(function*() {
+	var gdata;
+	var github_opts;
+
 	context.bindings.outputQueueItem = [];
-	if (context.req.headers["x-github-event"] === "push") {
-	    const configkey = data.repository.owner.name + "-" + data.repository.name;
-	    let cfg = yield getBlobToObj("projects", configkey);
-	    const gdata = {
+
+	const event_type = context.req.headers["x-github-event"];
+	if (event_type !== "push" && event_type !== "pull_request") {
+	    context.log("Ignore '" + event_type + "' event.");
+	    context.res = { body: 'Ok' };
+	    context.done();
+	    return;
+	}
+
+	const configkey = data.repository.owner.name + "-" + data.repository.name;
+	let cfg = yield getBlobToObj("projects", configkey);
+
+	if (event_type === "push") {
+	    gdata = {
 		after: data.after,
+		type: "push",
 		repository: {
 		    name: data.repository.name
 		}
 	    };
-	    let message = {
-		uuid: uuidv4(),
-		human_id: moniker.choose(),
-		connection_string: process.env["bbci_STORAGE"],
-		config: cfg,
-		github_data: gdata,
-	    };
-	    context.log(message);
-	    context.bindings.outputQueueItem = [message];
-	    yield updateGithubStatus(cfg.project.token.trim(), {
+	    github_opts = {
 		owner: data.repository.owner.name,
 		repo: data.repository.name,
 		sha: data.after,
 		state: "pending"
-	    });
-	    context.log("github status updated!!!");
+	    }
+	} else if (event_type === "pull_request" && data.action === "opened") {
+	    gdata = {
+		after: data.pull_request.head.sha,
+		type: "pull_request",
+		clone_url: data.pull_request.head.repo.clone_url,
+		repository: {
+		    name: data.repository.name
+		}
+	    };
+	    github_opts = {
+		owner: data.repository.owner.name,
+		repo: data.repository.name,
+		sha: data.pull_request.head.sha,
+		state: "pending"
+	    }
+	} else {
+	    context.log("Ignore '" + event_type + "' event.");
+	    context.res = { body: 'Ok' };
+	    context.done();
+	    return;
 	}
+
+	let message = {
+	    uuid: uuidv4(),
+	    human_id: moniker.choose(),
+	    connection_string: process.env["bbci_STORAGE"],
+	    config: cfg,
+	    github_data: gdata,
+	};
+	context.log(message);
+	context.bindings.outputQueueItem = [message];
+	yield updateGithubStatus(cfg.project.token.trim(), github_opts);
+	context.log("github status updated!!!");
 	context.res = { body: 'Ok' };
 	context.done();
     });
