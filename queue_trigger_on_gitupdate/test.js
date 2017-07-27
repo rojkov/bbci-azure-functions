@@ -5,6 +5,7 @@ var context = {
 };
 
 var taskdata = {
-    human_id: "vm-tutorial2"
+    human_id: "vm-tutorial2",
+    ping: ""
 };
 module(context, taskdata);

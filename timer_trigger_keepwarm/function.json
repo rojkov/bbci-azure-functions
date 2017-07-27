@@ -1,0 +1,26 @@
+{
+  "bindings": [
+    {
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 */4 * * * *",
+      "name": "keepwarmTimer"
+    },
+    {
+      "type": "queue",
+      "name": "ping1QueueItem",
+      "queueName": "gitupdates",
+      "connection": "bbci_STORAGE",
+      "direction": "out"
+    },
+    {
+      "type": "queue",
+      "name": "ping2QueueItem",
+      "queueName": "buildresults",
+      "connection": "bbci_STORAGE",
+      "direction": "out"
+    }
+
+  ],
+  "disabled": false
+}

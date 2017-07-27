@@ -89,6 +89,10 @@ const publicIPParameters = {
 };
 
 module.exports = function (context, queueItem) {
+    if (queueItem.ping === "ping") {
+	context.done();
+	return;
+    }
     context.log('JavaScript queue trigger function processed work item', queueItem);
     run(function*() {
         let text = yield getBlobToText("credentials", "credentials.json");

@@ -126,6 +126,7 @@ module.exports = function (context, data) {
 	    connection_string: process.env["bbci_STORAGE"],
 	    config: cfg,
 	    github_data: gdata,
+	    ping: ""
 	};
 	context.log(message);
 	context.bindings.outputQueueItem = [message];

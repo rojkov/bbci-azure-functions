@@ -43,6 +43,10 @@ function getBlobToText(container, blobName) {
 }
 
 module.exports = function (context, queueItem) {
+    if (queueItem.ping === "ping") {
+	context.done();
+	return;
+    }
     context.log('Queue trigger for build results processes work item', queueItem);
     run(function*() {
         let text = yield getBlobToText("credentials", "credentials.json");

@@ -6,6 +6,10 @@ var context = {
 
 var taskdata = {
     human_id: "many-wish",
-    build_result: "success"
+    build_result: "success",
+    ping: "ping"
 };
+module(context, taskdata);
+
+taskdata.ping = "";
 module(context, taskdata);
