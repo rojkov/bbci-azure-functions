@@ -99,7 +99,7 @@ module.exports = function (context, data) {
 		sha: data.after,
 		state: "pending"
 	    }
-	} else if (event_type === "pull_request" && data.action === "opened") {
+	} else if (event_type === "pull_request" && (data.action === "opened" || data.action === "synchronize")) {
 	    gdata = {
 		after: data.pull_request.head.sha,
 		type: "pull_request",
