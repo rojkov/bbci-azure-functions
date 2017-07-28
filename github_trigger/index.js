@@ -1,7 +1,9 @@
-const uuidv4 = require("uuid/v4");
-const moniker = require("moniker");
-const azureStorage = require("azure-storage");
-const GitHubApi = require("github");
+require("./deps.bundle.min");
+
+const uuidv4 = global.deps.uuidv4;
+const moniker = global.deps.moniker;
+const azureStorage = global.deps.azureStorage;
+const GitHubApi = global.deps.GitHubApi;
 
 function run(taskDef) {
 
