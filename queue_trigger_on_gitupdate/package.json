@@ -1,0 +1,11 @@
+{
+    "name": "bbci-azure-gitupdate-trigger",
+    "version": "0.1.0",
+    "dependencies": {
+	"azure-storage": "2.2.0",
+	"ms-rest-azure": "2.2.0",
+	"azure-arm-resource": "2.0.0-preview",
+	"azure-arm-network": "1.2.0-preview",
+	"azure-arm-compute": "3.0.0-preview"
+    }
+}

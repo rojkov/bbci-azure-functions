@@ -1,11 +1,13 @@
+require("./deps.bundle.min");
+
 let fs = require("fs");
 let path = require("path");
 
-let azureStorage = require('azure-storage');
-let msRestAzure = require('ms-rest-azure');
-let resourceManagement = require("azure-arm-resource");
-let networkManagement = require('azure-arm-network');
-let computeManagement = require('azure-arm-compute');
+const azureStorage = global.deps.azureStorage;
+const msRestAzure = global.deps.msRestAzure;
+const resourceManagement = global.deps.resourceManagement;
+const networkManagement = global.deps.networkManagement;
+const computeManagement = global.deps.computeManagement;
 
 function run(taskDef) {
 
