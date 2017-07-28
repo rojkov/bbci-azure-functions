@@ -13,7 +13,7 @@ var data1 = {
     after: "5496a3e0a144c0fb2ce34dfb1255444178cd8df0",
     repository: {
         name: "meta-ros",
-        owner: { name: "rojkov" }
+        owner: { login: "rojkov" }
     }
 };
 
