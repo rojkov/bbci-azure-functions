@@ -1,6 +1,8 @@
-let msRestAzure = require('ms-rest-azure');
-let azureStorage = require('azure-storage');
-let resourceManagement = require("azure-arm-resource");
+require("./deps.bundle.min");
+
+const msRestAzure = global.deps.msRestAzure;
+const azureStorage = global.deps.azureStorage;
+const resourceManagement = global.deps.resourceManagement;
 
 function run(taskDef) {
 
