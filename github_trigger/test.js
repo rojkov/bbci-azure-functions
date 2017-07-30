@@ -32,7 +32,7 @@ var data2 = {
     },
     repository: {
         name: "meta-ros",
-        owner: { name: "rojkov" }
+        owner: { login: "rojkov" }
     }
 };
 module(context, data2);
