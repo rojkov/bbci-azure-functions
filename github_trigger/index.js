@@ -45,25 +45,31 @@ function getBlobToObj(container, blobName) {
     });
 }
 
-function updateGithubStatus(statustoken, statusdata) {
+function updateGithubStatus(statustoken, statusdata, context) {
+    context.log("inside github update");
     return new Promise(function(resolve, reject) {
-	let github = new GitHubApi({
-	    protocol: "https",
-	    host: "api.github.com"
-	});
+	try {
+	    let github = new GitHubApi({
+		protocol: "https",
+		host: "api.github.com"
+	    });
 
-	github.authenticate({
-	    type: "token",
-	    token: statustoken
-	});
+	    github.authenticate({
+		type: "token",
+		token: statustoken
+	    });
 
-	github.repos.createStatus(statusdata, function(err, result) {
-	    if (err) {
-		reject(err);
-	    } else {
-		resolve(result);
-	    }
-	});
+	    github.repos.createStatus(statusdata, function(err, result) {
+		if (err) {
+		    reject(err);
+		} else {
+		    resolve(result);
+		}
+	    });
+	} catch (ex) {
+	    context.log(ex);
+	    reject(ex);
+	}
     });
 }
 
@@ -133,7 +139,8 @@ module.exports = function (context, data) {
 	};
 	context.log(message);
 	context.bindings.outputQueueItem = [message];
-	yield updateGithubStatus(cfg.project.token.trim(), github_opts);
+	context.log("just before github")
+	yield updateGithubStatus(cfg.project.token.trim(), github_opts, context);
 	context.log("github status updated!!!");
 	context.res = { body: 'Ok' };
 	context.done();
