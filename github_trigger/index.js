@@ -98,7 +98,10 @@ module.exports = function (context, data) {
 		after: data.after,
 		type: "push",
 		repository: {
-		    name: data.repository.name
+		    name: data.repository.name,
+		    owner: {
+			login: data.repository.owner.login
+		    }
 		}
 	    };
 	    github_opts = {
@@ -113,7 +116,10 @@ module.exports = function (context, data) {
 		type: "pull_request",
 		clone_url: data.pull_request.head.repo.clone_url,
 		repository: {
-		    name: data.repository.name
+		    name: data.repository.name,
+		    owner: {
+			login: data.repository.owner.login
+		    }
 		}
 	    };
 	    github_opts = {
