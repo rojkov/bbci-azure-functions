@@ -74,6 +74,9 @@ function updateGithubStatus(statustoken, statusdata, context) {
 }
 
 module.exports = function (context, data) {
+    context.done();
+    context.res = { body: 'Ok' };
+    return;
     context.log('GitHub Webhook triggered!!');
     run(function*() {
 	var gdata;
